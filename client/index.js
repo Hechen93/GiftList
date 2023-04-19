@@ -12,7 +12,7 @@ async function main() {
     const root = merkleTree.getRoot();
 
     //Change the name here
-    const leaf = 'Jon Snow';
+    const leaf = 'Judith Walsh III';
     const index = niceList.findIndex((n) => n === leaf);
     console.log('Index position on nice list:', index);
     console.log('Leaf Name:', leaf);
@@ -22,7 +22,7 @@ async function main() {
     console.log('Root: ', root);
     //console.log('Client proof:', proof);
 
-    const body = { proof, leaf: leaf };
+    const body = { proof, leaf };
 
     const { data: gift } = await axios.post(`${serverUrl}/gift`, body); // TODO: add request body parameters here!
     //Need to send: index, layer, getProof
