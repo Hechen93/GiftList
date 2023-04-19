@@ -6,17 +6,31 @@ const serverUrl = 'http://localhost:1225';
 
 async function main() {
   // TODO: how do we prove to the server we're on the nice list?
-  const merkleTree = new MerkleTree(niceList);
+  try {
+    const merkleTree = new MerkleTree(niceList);
 
-  const root = merkleTree.getRoot();
-  console.log('Root: ', root);
-  console.log('Nice List Index Name:', niceList[5]);
+    const root = merkleTree.getRoot();
 
-  const { data: gift } = await axios.post(`${serverUrl}/gift`, {
-    // TODO: add request body parameters here!
-  });
+    //Change the name here
+    const leaf = 'Jon Snow';
+    const index = niceList.findIndex((n) => n === leaf);
+    console.log('Index position on nice list:', index);
+    console.log('Leaf Name:', leaf);
+    console.log('Index:', index);
+    const proof = merkleTree.getProof(index);
 
-  console.log({ gift });
+    console.log('Root: ', root);
+    //console.log('Client proof:', proof);
+
+    const body = { proof, leaf: leaf };
+
+    const { data: gift } = await axios.post(`${serverUrl}/gift`, body); // TODO: add request body parameters here!
+    //Need to send: index, layer, getProof
+
+    console.log({ gift });
+  } catch (ex) {
+    console.log('Could not complete request to server.');
+  }
 }
 
 main();
